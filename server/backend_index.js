@@ -182,9 +182,9 @@ app.post('/group/delete/:id', async (req, res) => {
     // Delete all expenses in the group
     console.log(group_info)
     let exp_ids = group_info.exp_ids;
-    await Expense.deleteMany({ id: { $in: exp_ids } })
-    await Group.deleteOne({ id: grp_id })
-    res.send({ status: '200', data: group_info })
+    await Expense.deleteMany({ id: { $in: exp_ids } });
+    await Group.deleteOne({ id: grp_id });
+    res.send({ status: '200', data: group_info });
   } catch (e) {
     console.log(e);
     res.send({ status: '404', data: 'Internal Server Error!' })
