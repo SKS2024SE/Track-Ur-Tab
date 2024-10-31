@@ -32,10 +32,17 @@ export default function PersonalExpenses() {
             response = await response.json();
             if( response.status == '200' ) {
                 loaded = true;
+                console.log("Personal Expenses: ", {
+                    current_user: user,
+                    user_details: response.data.user_details,
+                    expenses: response.data.expenses
+                });
                 setPersonalExpenses({
                     current_user: user,
-                    expenses: response.data
+                    user_details: response.data.user_details,
+                    expenses: response.data.expenses
                 });
+                
             } else {
                 // Add a toast here stating the error 
                 

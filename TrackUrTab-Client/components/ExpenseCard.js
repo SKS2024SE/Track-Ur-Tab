@@ -1,21 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Card } from 'react-native-paper';
+import { CollapsableContainer } from './CollapsableContainer';
 
-export default function ExpenseCard({ exp_id, title, description, owner, amount, callback }) {
+export default function ExpenseCard({ exp_id, title, subtitle, description, owner, collapsibleData, amount, callback }) {
+    const [expanded, setExpanded] = useState(false);
+
+    const onItemPress = () => {
+        setExpanded(!expanded);
+    }
+
     const defaultImage = require('../assets/images/profile-pic.webp');
+    
     return (
         // <Card>
         //     <Card.Title title={title} subtitle={description} />
         // </Card>
         <View style={styles.card}>
-            <TouchableOpacity onPress={() => { console.log('Hello world'); callback(exp_id)}}>
+            <TouchableOpacity onPress={() => collapsibleData ? onItemPress(): callback(exp_id) }>
                 <View style={styles.content}>
                     <Text style={styles.title}>{title}</Text>
+                    <Text style={styles.description}>{subtitle}</Text>
                     <Text style={styles.description}>{description}</Text>
-                    <Text style={styles.description}>{owner}</Text>
                 </View>
             </TouchableOpacity>
+            { collapsibleData ? <CollapsableContainer expanded={expanded} children={(<Text style={styles.collapsible}>{collapsibleData}</Text>)}>
+            </CollapsableContainer> : ''}
         </View>
     );
 }
@@ -45,4 +54,9 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#555',
     },
+    collapsible: {
+        fontSize: 14,
+        color: '#555',
+        paddingLeft: 16
+    }
 });

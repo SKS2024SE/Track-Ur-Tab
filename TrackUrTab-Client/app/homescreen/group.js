@@ -1,6 +1,6 @@
 // 
 import GroupExpenses from "../../components/GroupExpenses";
 
-export default function Login() {
+export default function Group() {
   return <GroupExpenses />;
 }
