@@ -1,12 +1,17 @@
-import { View, Text, Button } from "react-native";
+import { View } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import config from '../client_config.json';
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import ExpensesRenderer from "./ExpensesRenderer";
 
 export default function PersonalExpenses() {
-    const [personalExpenses, setPersonalExpenses] = useState([]);
+    const [personalExpenses, setPersonalExpenses] = useState({});
+    let loaded = false;
 
     const fetchPersonalExpenses = async () => {
+        if(loaded) {
+            return;
+        }
         const user_details = await AsyncStorage.getItem(config.user_storage_key);
         let user = JSON.parse(user_details)
         let data = {
@@ -26,8 +31,11 @@ export default function PersonalExpenses() {
             }) 
             response = await response.json();
             if( response.status == '200' ) {
-                console.log(response.data);
-                setPersonalExpenses(response.data);
+                loaded = true;
+                setPersonalExpenses({
+                    current_user: user,
+                    expenses: response.data
+                });
             } else {
                 // Add a toast here stating the error 
                 
@@ -37,12 +45,16 @@ export default function PersonalExpenses() {
         } catch(e) {
             console.log(e);
         }
+        return undefined;
     }
+
+    useEffect(()=>{
+        fetchPersonalExpenses();
+    }, []);
 
     return (
         <View>
-            <Button title="Press to get all expenses" onPress={fetchPersonalExpenses} />     
-            <Text>Welcome to personal expense</Text>
+            <ExpensesRenderer data={personalExpenses} />
         </View>
     )
 }

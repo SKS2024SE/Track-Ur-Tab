@@ -1,16 +1,21 @@
-// Card.js
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Card } from 'react-native-paper';
 
-export default function ExpenseCard({ title, description, image }) {
-    const defaultImage = require('../assets/images/profile-pic.webp'); 
+export default function ExpenseCard({ exp_id, title, description, owner, amount, callback }) {
+    const defaultImage = require('../assets/images/profile-pic.webp');
     return (
+        // <Card>
+        //     <Card.Title title={title} subtitle={description} />
+        // </Card>
         <View style={styles.card}>
-            {image && <Image source={{ uri: image || defaultImage }} style={styles.image} />}
-            <View style={styles.content}>
-                <Text style={styles.title}>{title}</Text>
-                <Text style={styles.description}>{description}</Text>
-            </View>
+            <TouchableOpacity onPress={() => { console.log('Hello world'); callback(exp_id)}}>
+                <View style={styles.content}>
+                    <Text style={styles.title}>{title}</Text>
+                    <Text style={styles.description}>{description}</Text>
+                    <Text style={styles.description}>{owner}</Text>
+                </View>
+            </TouchableOpacity>
         </View>
     );
 }
@@ -27,10 +32,6 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         marginHorizontal: 16,
         overflow: 'hidden',
-    },
-    image: {
-        width: '100%',
-        height: 150,
     },
     content: {
         padding: 16,
