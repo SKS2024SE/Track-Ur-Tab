@@ -33,24 +33,24 @@ db.getCollection('grp_details').insertMany([
 ])
 
 db.getCollection('expense_details').insertMany([
-    { id: 'e11', type: 'group', owner: 'kswamin3', grp_id: '1223', 'kswamin3': 30, 'sshunmu2': 30, 'sshunmu': 40, total_cost: 100},
-    { id: 'e12', type: 'group', owner: 'sshunmu2', grp_id: '1223', 'kswamin3': 30, 'sshunmu2': 30, 'sshunmu': 40, total_cost: 100},
-    { id: 'e13', type: 'group', owner: 'sshunmu', grp_id: '1223', 'kswamin3': 30, 'sshunmu2': 30, 'sshunmu': 40, total_cost: 100},
-    { id: 'e21', type: 'group', owner: 'kswamin3', grp_id: '1224', 'kswamin3': 30, 'sshunmu2': 30, 'sshunmu': 40, total_cost: 100},
-    { id: 'e22', type: 'group', owner: 'sshunmu2', grp_id: '1224', 'kswamin3': 30, 'sshunmu2': 30, 'sshunmu': 40, total_cost: 100},
-    { id: 'e23', type: 'group', owner: 'sshunmu', grp_id: '1224', 'kswamin3': 30, 'sshunmu2': 30, 'sshunmu': 40, total_cost: 100},
-    { id: 'e31', type: 'group', owner: 'kswamin3', grp_id: '1225', 'kswamin3': 30, 'sshunmu2': 30, 'sshunmu': 40, total_cost: 100},
-    { id: 'e32', type: 'group', owner: 'sshunmu2', grp_id: '1225', 'kswamin3': 30, 'sshunmu2': 30, 'sshunmu': 40, total_cost: 100},
-    { id: 'e33', type: 'group', owner: 'sshunmu', grp_id: '1225', 'kswamin3': 30, 'sshunmu2': 30, 'sshunmu': 40, total_cost: 100},
-    { 'id': 'e1234', type: 'personal', owner: 'kswamin3', grp_id: '1234', 'kswamin3': -30, total_cost: 30},
-    { 'id': 'e12341', type: 'personal', owner: 'kswamin3', grp_id: '1234', 'kswamin3': -30, total_cost: 30},
-    { 'id': 'e12342', type: 'personal', owner: 'kswamin3', grp_id: '1234', 'kswamin3': -30, total_cost: 30},
-    { 'id': 'e1235', type: 'personal', owner: 'sshunmu2', grp_id: '1235', 'sshunmu2': -30, total_cost: 30},
-    { 'id': 'e12351', type: 'personal', owner: 'sshunmu2', grp_id: '1235', 'sshunmu2': -30, total_cost: 30},
-    { 'id': 'e12352', type: 'personal', owner: 'sshunmu2', grp_id: '1235', 'sshunmu2': -30, total_cost: 30},
-    { 'id': 'e1236', type: 'personal', owner: 'sshunmu', grp_id: '1236', 'sshunmu': -30, total_cost: 30},
-    { 'id': 'e12361', type: 'personal', owner: 'sshunmu', grp_id: '1236', 'sshunmu': -30, total_cost: 30},
-    { 'id': 'e12362', type: 'personal', owner: 'sshunmu', grp_id: '1236', 'sshunmu': -30, total_cost: 30}
+    { id: 'e11', type: 'group', owner: 'kswamin3', grp_id: '1223', memberShare: {'kswamin3': 30, 'sshunmu2': 30, 'sshunmu': 40}, total_cost: 100, title: 'Exp 1', description: 'On some date', category: 'Rent'},
+    { id: 'e12', type: 'group', owner: 'sshunmu2', grp_id: '1223', memberShare: {'kswamin3': 30, 'sshunmu2': 30, 'sshunmu': 40}, total_cost: 100, title: 'Exp 2', description: 'On some date', category: 'Electricity'},
+    { id: 'e13', type: 'group', owner: 'sshunmu', grp_id: '1223', memberShare: {'kswamin3': 30, 'sshunmu2': 30, 'sshunmu': 40}, total_cost: 100, title: 'Exp 3',  description: 'On some date', category: 'Water'},
+    { id: 'e21', type: 'group', owner: 'kswamin3', grp_id: '1224', memberShare: {'kswamin3': 30, 'sshunmu2': 30, 'sshunmu': 40}, total_cost: 100, title: 'Exp 4',  description: 'On some date', category: 'Gas'},
+    { id: 'e22', type: 'group', owner: 'sshunmu2', grp_id: '1224', memberShare: {'kswamin3': 30, 'sshunmu2': 30, 'sshunmu': 40}, total_cost: 100, title: 'Exp 5',  description: 'On some date',category: 'Rent'},
+    { id: 'e23', type: 'group', owner: 'sshunmu', grp_id: '1224', memberShare: {'kswamin3': 30, 'sshunmu2': 30, 'sshunmu': 40}, total_cost: 100, title: 'Exp 6',  description: 'On some date', category: 'Electricity'},
+    { id: 'e31', type: 'group', owner: 'kswamin3', grp_id: '1225', memberShare: {'kswamin3': 30, 'sshunmu2': 30, 'sshunmu': 40}, total_cost: 100, title: 'Exp 7',  description: 'On some date', category: 'Water'},
+    { id: 'e32', type: 'group', owner: 'sshunmu2', grp_id: '1225', memberShare: {'kswamin3': 30, 'sshunmu2': 30, 'sshunmu': 40}, total_cost: 100, title: 'Exp 8',  description: 'On some date', category: 'Gas'},
+    { id: 'e33', type: 'group', owner: 'sshunmu', grp_id: '1225', memberShare: {'kswamin3': 30, 'sshunmu2': 30, 'sshunmu': 40}, total_cost: 100, title: 'Exp 9',  description: 'On some date', category: 'Deposit'},
+    { 'id': 'e1234', type: 'personal', owner: 'kswamin3', grp_id: '1234', memberShare: {'kswamin3': -30}, total_cost: 30, title: 'exp 1',  description: 'On some date', category: 'Rent'},
+    { 'id': 'e12341', type: 'personal', owner: 'kswamin3', grp_id: '1234', memberShare: {'kswamin3': -30}, total_cost: 30, title: 'exp 2', description: 'On some date', category: 'Rent'},
+    { 'id': 'e12342', type: 'personal', owner: 'kswamin3', grp_id: '1234', memberShare: {'kswamin3': -30}, total_cost: 30, title: 'exp 3', description: 'On some date', category: 'Rent'},
+    { 'id': 'e1235', type: 'personal', owner: 'sshunmu2', grp_id: '1235', memberShare: {'sshunmu2': -30}, total_cost: 30, title: 'exp 1', description: 'On some date', category: 'Rent'},
+    { 'id': 'e12351', type: 'personal', owner: 'sshunmu2', grp_id: '1235', memberShare: {'sshunmu2': -30}, total_cost: 30, title: 'exp 2', description: 'On some date', category: 'Rent'},
+    { 'id': 'e12352', type: 'personal', owner: 'sshunmu2', grp_id: '1235', memberShare: {'sshunmu2': -30}, total_cost: 30, title: 'exp 3', description: 'On some date', category: 'Rent'},
+    { 'id': 'e1236', type: 'personal', owner: 'sshunmu', grp_id: '1236', memberShare: {'sshunmu': -30}, total_cost: 30, title: 'exp 1', description: 'On some date', category: 'Rent'},
+    { 'id': 'e12361', type: 'personal', owner: 'sshunmu', grp_id: '1236', memberShare: {'sshunmu': -30}, total_cost: 30, title: 'exp 2', description: 'On some date', category: 'Rent'},
+    { 'id': 'e12362', type: 'personal', owner: 'sshunmu', grp_id: '1236', memberShare: {'sshunmu': -30}, total_cost: 30, title: 'exp 3', description: 'On some date', category: 'Rent'}
 ])
 
 // use('Track-Ur-Tab')

@@ -58,14 +58,32 @@ async function getGroupExpenses(group_id) {
   return expenses;
 }
 
-
 async function getUserDetails(user_id) {
   let user_info = await User.findOne({ id: user_id });
   return user_info;
 }
 
+async function getUsersDetails(user_ids) {
+  let result = {};
+  let i, size=user_ids.length;
+  for(i=0; i<size; i++) {
+    result[user_ids[i]] = await getUserDetails(user_ids[i]);
+  }
+  return result;
+}
+
 async function getUserExpenses(exp_id) {
   let expenses = await getGroupExpenses(exp_id);
+  let i, size=expenses.length;
+  for(i=0; i<size; i++) {
+    expenses[i].toObject();
+    let members = expenses[i];
+    let memberShare = members.memberShare;
+    let user_details = await getUsersDetails(Object.keys(memberShare));
+    members.user_details = user_details;
+    expenses[i] = members;
+  }
+  console.log('Expenses: ', expenses);
   return expenses;
 }
 
@@ -88,6 +106,8 @@ async function getUserIDsForEmailIDs(member_ids) {
 
 // Fetch personal expenses of a user 
 app.post('/user/fetch-exp', async (req, res) => {
+  console.log('Inside /user/fetch-exp');
+  console.log(req.body);
   const { user_id, token } = req.body;
   let isVerifiedReq = verifyLoginUser(user_id, token);
   if (!isVerifiedReq) {
@@ -324,7 +344,7 @@ app.post('/group/add-member', async (req, res) => {
 
 // Add an expense to a group
 app.post('/group/add-expense', async (req, res) => {
-  const { owner, grp_id, type, member_costs, total_cost, token } = req.body;
+  const { owner, grp_id, type, member_costs, total_cost, title, description, category, token } = req.body;
 
   let isVerify = verifyLoginUser(owner, token)
   if (!isVerify) {
@@ -369,7 +389,10 @@ app.post('/group/add-expense', async (req, res) => {
       grp_id: grp_id,
       type: type,
       total_cost: total_cost,
-      memberShare: new_expense
+      memberShare: new_expense,
+      title: title,
+      description: description,
+      category: category
     });
 
     console.log("Successfully created an expense! Mapping it to groups...")
@@ -391,8 +414,8 @@ app.post('/group/add-expense', async (req, res) => {
 
 // User related operations
 app.post('/register', async (req, res) => {
+  console.log('Inside /register');
   const { name, email, phone_no, password } = req.body;
-
   // Check if email ID exists already
   const oldUser = await User.findOne({ email: email });
   if (oldUser) {
@@ -412,6 +435,8 @@ app.post('/register', async (req, res) => {
   });
 
   // Create user in the DB
+  // let hashedPassword = await bcrypt.hash(password, 10);
+
   try {
     await User.create({
       id: user_id,
@@ -422,7 +447,7 @@ app.post('/register', async (req, res) => {
       personal_exp: personal_grp_id,
       group_exp: []
     });
-    res.send({ status: '200', data: 'User created succesfully' });
+    res.send({ status: '200', data: user_id });
   } catch (e) {
     console.log(e);
     res.send({ status: '404', data: 'Internal server error' });
@@ -431,13 +456,18 @@ app.post('/register', async (req, res) => {
 });
 
 app.post('/login', async (req, res) => {
+  console.log('Inside /login');
   const { email, password } = req.body;
 
-  const oldUser = await User.findOne({ email: email, password: password });
-
+  const oldUser = await User.findOne({ email: email });
   if (oldUser) {
+    let storedPassword = oldUser.password;
+    // let isSame = await bcrypt.compare(storedPassword, password);
+    if( storedPassword != password ) {
+      return res.send({ status: '400', data: 'Unauthorized access!'});
+    }
     let token = jwt.sign({ user_id: oldUser.id }, JWT_SECRET);
-    res.send({ status: '200', data: token });
+    res.send({ status: '200', data: { id: oldUser.id, token: token } });
   } else {
     res.send({ status: '404', data: 'User not found!' });
   }
@@ -493,7 +523,7 @@ app.post('/update-user', async (req, res) => {
   }
 })
 
-app.get('/user-info/:id', async (req, res) => {
+app.get('/user/:id', async (req, res) => {
   let user_id = req.params.id;
   let token = req.cookies.token;
 
@@ -504,6 +534,10 @@ app.get('/user-info/:id', async (req, res) => {
   let user_info = await getUserDetails(user_id);
   res.send({ status: '200', data: user_info });
 });
+
+app.get('/', ()=>{
+  return "Hello world";
+})
 
 app.listen('5001', () => {
   console.log('Server started - Lo and behold!');

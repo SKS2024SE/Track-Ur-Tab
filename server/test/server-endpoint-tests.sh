@@ -1,6 +1,6 @@
 curl -X POST http://localhost:5001/register -H "Content-Type: application/json" -d '{"email": "araviku@ncsu.edu", "password": "admin123", "name": "Amar Ravikumar"}'
 
-curl -X POST http://localhost:5001/login -H "Content-Type: application/json" -d '{"email":"kswamin3@ncsu.edu", "password":"admin123"}'
+curl -X POST http://localhost:5001/login -H "Content-Type: application/json" -d '{"email":"kswamin@ncsu.edu", "password":"admin123"}'
 
 curl -X POST http://localhost:5001/update-user -H "Content-Type: application/json" -d '{"email": "kswamin3@ncsu.edu","name": "Krithika S", "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoia3N3YW1pbjMiLCJpYXQiOjE3MzAwNjI3MTd9.BG3Z7XWxyEWj0sZipfODeSz3n9fdrmAJxYeHILym92Y"}'
 
