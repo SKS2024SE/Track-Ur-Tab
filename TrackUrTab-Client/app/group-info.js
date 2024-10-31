@@ -4,8 +4,7 @@ import { View, Text } from "react-native";
 import GroupInfo from "../components/GroupInfo";
 import { useData } from "./dataprovider";
 
-export default function GroupInfoRoute({ params1 }) {
-    const route = useRouter();
+export default function GroupInfoRoute() {
     const { data } = useData();
 
    console.log('Groupinfo data: ', data);

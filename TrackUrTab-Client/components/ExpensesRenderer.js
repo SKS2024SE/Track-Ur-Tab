@@ -4,7 +4,7 @@ import { View, FlatList } from "react-native";
 export default function ExpensesRenderer({ data }) {
     const formatData = () => {
         let res = [];
-        console.log('Personal Expenses : ', data.user_details);
+        console.log('Personal Expenses : ', data);
         data.expenses?.forEach(exp => {
             try {
                 console.log('Expense owner: ', exp.id);
