@@ -39,11 +39,12 @@ function verifyLoginUser(user_id, token) {
 
 async function getGroupDetails(group_id) {
   let group_info = await Group.findOne({ id: group_id })
-  group_info = group_info.toObject();
-  let user_info = {};
   if (!group_info) {
     return undefined;
   }
+  group_info = group_info.toObject();
+  let user_info = {};
+  
   let i = 0, user_ids = group_info.user_ids, size = user_ids.length;
   for (i = 0; i < size; i++) {
     user_info[user_ids[i]] = await getUserDetails(user_ids[i]);
@@ -60,7 +61,7 @@ async function getGroupExpenses(group_id) {
 
 async function getUserDetails(user_id) {
   let user_info = await User.findOne({ id: user_id });
-  return user_info;
+  return user_info.toObject();
 }
 
 async function getUsersDetails(user_ids) {
@@ -76,14 +77,11 @@ async function getUserExpenses(exp_id) {
   let expenses = await getGroupExpenses(exp_id);
   let i, size=expenses.length;
   for(i=0; i<size; i++) {
-    expenses[i].toObject();
-    let members = expenses[i];
-    let memberShare = members.memberShare;
-    let user_details = await getUsersDetails(Object.keys(memberShare));
+    let members = expenses[i].toObject();
+    let user_details = await getUsersDetails(Object.keys(members.memberShare));
     members.user_details = user_details;
     expenses[i] = members;
   }
-  console.log('Expenses: ', expenses);
   return expenses;
 }
 
@@ -107,7 +105,6 @@ async function getUserIDsForEmailIDs(member_ids) {
 // Fetch personal expenses of a user 
 app.post('/user/fetch-exp', async (req, res) => {
   console.log('Inside /user/fetch-exp');
-  console.log(req.body);
   const { user_id, token } = req.body;
   let isVerifiedReq = verifyLoginUser(user_id, token);
   if (!isVerifiedReq) {
@@ -131,6 +128,7 @@ app.post('/user/fetch-exp', async (req, res) => {
 
 // Fetch the groups in which a user is present
 app.post('/user/group-details', async (req, res) => {
+  console.log('Inside /user/group-details', req.body);
   const { user_id, token } = req.body;
 
   const verifyReq = verifyLoginUser(user_id, token);
@@ -344,6 +342,7 @@ app.post('/group/add-member', async (req, res) => {
 
 // Add an expense to a group
 app.post('/group/add-expense', async (req, res) => {
+  console.log('/group/add-expense', req.body);
   const { owner, grp_id, type, member_costs, total_cost, title, description, category, token } = req.body;
 
   let isVerify = verifyLoginUser(owner, token)

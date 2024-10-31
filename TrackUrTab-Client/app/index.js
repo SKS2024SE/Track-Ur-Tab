@@ -31,10 +31,23 @@
 // /app/index.js (Home Screen)
 import { View, Text, Button, Image, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import config from '../client_config.json';
+import { useEffect } from "react";
 
 export default function HomeScreen() {
   const router = useRouter();
+  const getUserLoginDetails = async () => {
+    const user_details = await AsyncStorage.getItem(config.user_storage_key);
+    if( user_details ) {
+      router.push('/homescreen');
+    }    
+  }
 
+  useEffect(()=> {
+    getUserLoginDetails();
+  }, []);
+  
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome to My App!</Text>
