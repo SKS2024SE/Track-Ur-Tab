@@ -8,6 +8,7 @@ export default function Layout() {
         <Stack.Screen name="login" />
         <Stack.Screen name="signup" />
         <Stack.Screen name="homescreen" options={{ headerShown: false }} />
+        <Stack.Screen name="addexpense" options={{ title: 'Add Expense' }} /> {/* AddExpense screen */}
     </Stack>
   );
 }
