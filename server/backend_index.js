@@ -76,13 +76,14 @@ async function getUsersDetails(user_ids) {
 async function getUserExpenses(exp_id) {
   let expenses = await getGroupExpenses(exp_id);
   let i, size=expenses.length;
+  let user_details = {};
   for(i=0; i<size; i++) {
     let members = expenses[i].toObject();
-    let user_details = await getUsersDetails(Object.keys(members.memberShare));
-    members.user_details = user_details;
+    let ud = await getUsersDetails(Object.keys(members.memberShare));
+    user_details = { ...user_details, ...ud };
     expenses[i] = members;
   }
-  return expenses;
+  return { user_details: user_details, expenses: expenses };
 }
 
 async function getUserDetailsWithEmailId(email_id) {
@@ -94,11 +95,8 @@ async function getUserIDsForEmailIDs(member_ids) {
   let result = [];
   for (i = 0; i < size; i++) {
     let user_info = await getUserDetailsWithEmailId(member_ids[i]);
-    console.log('Member: ', member_ids[i])
-    console.log(user_info);
     result.push(user_info.id);
   }
-  console.log(result);
   return result;
 }
 
@@ -152,6 +150,7 @@ app.post('/user/group-details', async (req, res) => {
         result[grp]['expenses'] = expenses;
       }
     }
+    // console.log('Group details: ', result["1225"])
     res.send({ status: '200', data: result });
   } catch (e) {
     console.log(e)
@@ -198,7 +197,6 @@ app.post('/group/delete/:id', async (req, res) => {
 
   try {
     // Delete all expenses in the group
-    console.log(group_info)
     let exp_ids = group_info.exp_ids;
     await Expense.deleteMany({ id: { $in: exp_ids } });
     await Group.deleteOne({ id: grp_id });
@@ -265,7 +263,6 @@ app.get('/group/:id', async (req, res) => {
 // Create a group
 app.post('/group/create', async (req, res) => {
   const { owner, type, name, email_ids, token } = req.body;
-  console.log(owner)
   let isVerify = verifyLoginUser(owner, token);
   if (!isVerify) {
     return res.send({ status: '400', data: 'Unauthorized access' });
@@ -342,7 +339,7 @@ app.post('/group/add-member', async (req, res) => {
 
 // Add an expense to a group
 app.post('/group/add-expense', async (req, res) => {
-  console.log('/group/add-expense', req.body);
+  console.log('/group/add-expense');
   const { owner, grp_id, type, member_costs, total_cost, title, description, category, token } = req.body;
 
   let isVerify = verifyLoginUser(owner, token)
@@ -380,9 +377,7 @@ app.post('/group/add-expense', async (req, res) => {
     let new_expense = {};
     Object.keys(member_costs).forEach(member => {
       new_expense[member] = member_costs[member]
-      console.log(new_expense);
     });
-    console.log(new_expense)
     await Expense.create({
       id: expense_id,
       grp_id: grp_id,
