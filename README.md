@@ -51,9 +51,12 @@ Currently the application stores User and Group data on MongoDB Real-Time Databa
 
  This project is licensed under the MIT License. See the [LICENSE](https://github.com/AtharvaGole/XpensAuditor/blob/main/LICENSE) file for details
  
-## Tools used
+## Tools and Technologies used
 
 - ReactNative
+- Expo (Package)
+- Expo-go (App)
+- HTML,CSS,JS
 - Embedded Emulator/ USB debugging on android device
 
  
