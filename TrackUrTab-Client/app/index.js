@@ -51,14 +51,28 @@ export default function HomeScreen() {
   
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome to My App!</Text>
+      <Text style={styles.title}></Text>
+      <Text>Track your Expenses one Tab at a time!</Text>
+
       <Image
-        source={{ uri: 'https://via.placeholder.com/150' }} // Replace with your logo/image URL
+        source={require('../assets/images/tutlogo.png')}
+        //source={require('./assets/images/tutlogo.png')}
         style={styles.image}
+
+        //source={{ uri: 'TrackUrTab-Client/assets/images/tutlogo.png' }}
+        //style={{ width: 100, height: 100 }}
       />
-      <View style={styles.buttonContainer}>
-        <Button title="Login" onPress={() => router.push("/login")} />
-        {/* <Button title="Signup" onPress={() => router.push("/signup")} /> */}
+
+      <View style={styles.container}>
+
+        <TouchableOpacity
+        style = {styles.button}
+        title="Continue"
+        onPress={() => router.push("/login")}
+        >
+          <Text style = {styles.buttonText}>Continue</Text>
+        </TouchableOpacity>
+
       </View>
     </View>
   );
@@ -69,20 +83,44 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    padding: 16,
+    backgroundColor:'#ffffff',
   },
   title: {
+
     fontSize: 28,
     fontWeight: "bold",
     marginBottom: 20,
+    marginTop: 50
   },
   image: {
-    width: 150,
-    height: 150,
+    width: 300,
+    height: 50,
     marginBottom: 20,
   },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    width: "100%",
+ 
+
+  button: {
+    backgroundColor: '#33e0ff', 
+    paddingVertical: 10,
+    paddingHorizontal: 100,
+    borderRadius: 10, 
+    alignItems: 'center', 
+    marginTop: 300
   },
+
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+
+  image: {
+    width: 300,
+    height: 50,
+    marginBottom: 20,
+    marginTop: 0,
+  },
+
+
 });
