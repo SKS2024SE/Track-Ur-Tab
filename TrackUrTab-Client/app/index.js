@@ -40,8 +40,8 @@ export default function HomeScreen() {
   const getUserLoginDetails = async () => {
     const user_details = await AsyncStorage.getItem(config.user_storage_key);
     if( user_details ) {
-      await AsyncStorage.clear();
-      // router.push('/homescreen');
+      // await AsyncStorage.clear();
+      router.push('/homescreen');
     }    
   }
 

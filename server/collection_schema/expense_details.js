@@ -6,7 +6,10 @@ const ExpenseDetailsSchema = new mongoose.Schema({
     owner: String,
     grp_id: String,
     memberShare: JSON,
-    total_cost: Number
+    total_cost: Number,
+    title: String,
+    description: String,
+    category: String
 }, {
     collection: 'expense_details'
 });
