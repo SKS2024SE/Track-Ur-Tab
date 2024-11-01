@@ -62,7 +62,7 @@ export default function PersonalExpenses() {
     }, []);
 
     return (
-        <View sytle={{ flex : 1, padding: 20 }}>
+        <View style={{ flex : 1, padding: 20 }}>
                 <ExpensesRenderer data={personalExpenses} />
 
                 <TouchableOpacity
