@@ -1,0 +1,6 @@
+{
+    "server_ip" : "10.154.32.210",
+    "server_port": "5001",
+    "user_storage_key": "user_details",
+    "grp_expense_details": "group_info"
+}
