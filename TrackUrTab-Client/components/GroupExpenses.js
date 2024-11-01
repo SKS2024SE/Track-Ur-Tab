@@ -58,7 +58,7 @@ export default function GroupExpenses() {
     }, []);
 
     return (
-        <View>
+        <View style={{ flex : 1, padding: 20 }}>
             <GroupExpenseRenderer data={personalExpenses} />
         </View>
     )

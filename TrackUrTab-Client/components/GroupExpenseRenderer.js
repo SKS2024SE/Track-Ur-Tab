@@ -88,7 +88,7 @@ export default function GroupExpenseRenderer({ data }) {
     );
 
     return ( 
-        <View style={{ borderColor: 'black' }}>
+        <View style={{ borderColor: 'black', flex : 1, padding: -10}}>
             <FlatList
                 data={formatData()}
                 renderItem={renderItem}
