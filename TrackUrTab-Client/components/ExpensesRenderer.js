@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { View, FlatList, Text, Dimensions, StyleSheet, RefreshControl, Animated, ScrollView, Alert } from "react-native";
+import { View, FlatList, Text, Dimensions, StyleSheet, RefreshControl, Animated, ScrollView, Alert, Image } from "react-native";
 import { PieChart, BarChart } from "react-native-chart-kit";
 import ExpenseCard from "./ExpenseCard";
 import { PanGestureHandler, GestureHandlerRootView } from "react-native-gesture-handler";
@@ -284,6 +284,10 @@ export default function ExpensesRenderer({ data }) {
                     keyExtractor={item => item.id}
                     scrollEnabled={false}  // Disable FlatList's own scrolling
                     contentContainerStyle={styles.flatListContent}
+                    ListEmptyComponent={ <View style={styles.emptyContainer}>
+                         <Image source={require('../assets/images/purse-icon.webp')} style={styles.icon} />
+                    <Text style={styles.emptyText}>Your pocket seems to be heavy!</Text>
+                  </View>}
                 />
             </ScrollView>
         </GestureHandlerRootView>
@@ -304,4 +308,20 @@ const styles = StyleSheet.create({
     flatListContent: {
         paddingBottom: 40,  // Extra padding for comfortable scrolling
     },
+    emptyContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 20,
+      },
+      emptyText: {
+        fontSize: 18,
+        color: 'gray',
+      },
+      icon: {
+        width: 200,   // Adjust size as needed
+        height: 200,
+        marginBottom: 15,
+        borderRadius: 100
+      },
 });
