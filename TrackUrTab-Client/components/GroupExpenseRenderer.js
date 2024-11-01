@@ -32,7 +32,7 @@ export default function GroupExpenseRenderer({ data }) {
                 tooltip: '',
                 owner: 'The group spent ' + total_cost,
                 total_cost: total_cost,
-                callback: navigateToGroupPage
+                callbacks: {details: navigateToGroupPage, edit: editGroupDetails, delete: deleteGroup }
             });
 
         } )
@@ -44,6 +44,7 @@ export default function GroupExpenseRenderer({ data }) {
     const navigateToGroupPage = ( grp_id ) => {
         console.log('Expense Info: ', data);
         let data_to_be_pushed = {
+            type: 'group-info',
             current_user : data.current_user,
             user_details: data.groups[grp_id].user_details,
             expenses: data.groups[grp_id].expenses,
@@ -57,8 +58,16 @@ export default function GroupExpenseRenderer({ data }) {
         });
     }
 
+    const editGroupDetails = ( grp_id ) =>{
+        console.log('Edit group: ', grp_id);
+    }
+
+    const deleteGroup = ( grp_id ) => {
+        console.log('Delete group: ', grp_id);
+    }
+
     const renderItem = ({ item }) => (
-        <ExpenseCard title={item.title} amount={item.total_cost} description={item.description} tooltip={item.owner} image={undefined} callback={item.callback} exp_id={item.id} owner={item.owner} />
+        <ExpenseCard title={item.title} amount={item.total_cost} description={item.description} tooltip={item.owner} image={undefined} callbacks={item.callbacks} exp_id={item.id} owner={item.owner} />
     );
 
     return ( 
