@@ -1,6 +1,11 @@
 # TRACK UR TAB
 a smart way to track your expenses
 
+The user base for expense tracker software includes young professionals, students, families, and freelancers, all seeking better budget management and spending insights. From debt managers and savers to corporate teams and retirees, it cater to diverse needs by enabling shared expense tracking, goal setting, helping users make informed financial decisions.
+
+Expense tracker software helps users improve financial awareness, manage budgets, track goals, reduce debt, and streamline shared expenses.For shared expenses, the app automatically adjusts balances to minimize the number of transactions needed, ensuring that everyone’s debts are settled efficiently.
+
+
 [![Code Coverage](https://codecov.io/gh/AtharvaGole/XpensAuditor/branch/main/graphs/badge.svg)](https://codecov.io/gh/SKS2024SE/XpensAuditor/branch/main)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7402784.svg)](https://doi.org/10.5281/zenodo.7402784)
 [![Collaborators](https://img.shields.io/badge/Collaborators-3-orange.svg?style=flat)](https://github.com/SKS2024SE/Track-Ur-Tab/graphs/contributors)
@@ -17,21 +22,17 @@ a smart way to track your expenses
  ## Project1 Features
  
  - This mobile application allows customers to add their expenses and keep track of them. 
- - Takes required minimal amount of data like date of transaction, product name and value
+ - Takes required minimal amount of data like the value of transaction, category of expenditure.
  - Each user needs to create/sign up to access the application, MongoDB is used to achieve authorization, authentication and accounting
  - The application keeps track of user data and stores it in the MongoDB realtime database
- - Profile set up module is where user can update their details 
- - Account Settings are available to change passwords, send password reset email
+ - Register module is where user can update their details.
  
  ## Project1 Enhancement Features
  
- - Ability to create Groups and track Group expenses
- - Analytics for Users and Groups
- - Push Notifications when Group Transactions are created
- - Sorting Transactions by Date, Amount, Category and Memo
- - Ability to view past transactions of previous months
+ - Ability to create Groups and track group expenses. Split expenses proportionally, while reducing the total number of Transactions.
+ - Expenditure Analytics for both Personal and Group expenditures.
  - Ability to create custom categories
- - UI refresh
+ - A fresh cross platform compatible UI
  
 ## Track-Ur-Tab Features 
 
@@ -43,7 +44,7 @@ a smart way to track your expenses
 
 
 ## Scalability
-Currently the application stores User and Group data on MongoDB Real-Time Database. Every smartphone with the app running needs to establish a connection to the database in order to sync data with the cloud. The app will run even without an internet connection, but in order to view the latest transactions of a group, you will need to query data from the database. T
+Currently the application stores User and Group data on MongoDB Real-Time Database. Every smartphone with the app running needs to establish a connection to the database in order to sync data with the cloud. The app will run even without an internet connection, but in order to view the latest transactions of a group, you will need to query data from the database.
 
 ## License
 
@@ -111,3 +112,7 @@ Members
  - Sandhiya Shunmugavel ( sshunmu2@ncsu.edu )
  - Sanjaey Shunmuga Sundaram ( sshunmu@ncsu.edu )
 
+Project Funding:
+This project thrives on the passion and curiosity of its contributors. If you’re interested in supporting us, whether through financial contributions or by offering your skills and time, we’d love to hear from you! Please feel free to reach out and join us on this journey.
+
+We promise technical support to anyone willing to contribute to the project.
