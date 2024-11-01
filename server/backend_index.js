@@ -44,7 +44,7 @@ async function getGroupDetails(group_id) {
   }
   group_info = group_info.toObject();
   let user_info = {};
-  
+
   let i = 0, user_ids = group_info.user_ids, size = user_ids.length;
   for (i = 0; i < size; i++) {
     user_info[user_ids[i]] = await getUserDetails(user_ids[i]);
@@ -66,8 +66,8 @@ async function getUserDetails(user_id) {
 
 async function getUsersDetails(user_ids) {
   let result = {};
-  let i, size=user_ids.length;
-  for(i=0; i<size; i++) {
+  let i, size = user_ids.length;
+  for (i = 0; i < size; i++) {
     result[user_ids[i]] = await getUserDetails(user_ids[i]);
   }
   return result;
@@ -75,9 +75,9 @@ async function getUsersDetails(user_ids) {
 
 async function getUserExpenses(exp_id) {
   let expenses = await getGroupExpenses(exp_id);
-  let i, size=expenses.length;
+  let i, size = expenses.length;
   let user_details = {};
-  for(i=0; i<size; i++) {
+  for (i = 0; i < size; i++) {
     let members = expenses[i].toObject();
     let ud = await getUsersDetails(Object.keys(members.memberShare));
     user_details = { ...user_details, ...ud };
@@ -181,6 +181,66 @@ app.post('/group/expenses', async (req, res) => {
 
 })
 
+// Update the expense 
+app.post('/expense/update/:id', async (req, res) => {
+  console.log('Inside /expense/update', req.body)
+  let id = req.params.id;
+  const { token, type, owner, grp_id, total_cost, title, description, category, member_costs } = req.body;
+
+  let isVerify = verifyLoginUser(owner, token)
+  if (!isVerify) {
+    return res.send({ status: '400', data: 'Unauthorized user' })
+  }
+
+  try {
+
+    // Add that expense to a group
+    let group_details = await getGroupDetails(grp_id);
+
+    if (!group_details) {
+      return res.send({ status: '400', data: 'No valid group information available!' });
+    }
+
+    //validation on total_cost 
+    let sum = 0;
+    Object.keys(member_costs).forEach(user => {
+      if (member_costs[user] < 0) {
+        sum = sum + (member_costs[user] * -1);
+      } else {
+        sum = sum + member_costs[user];
+      }
+    })
+    if (sum != total_cost) {
+      return res.send({ status: '400', data: 'Total costs and individual costs mismatch' })
+    }
+
+    let new_expense = {};
+    Object.keys(member_costs).forEach(member => {
+      new_expense[member] = member_costs[member]
+    });
+    await Expense.updateOne({ id: id }, {
+      $set: {
+        id: id,
+        grp_id: grp_id,
+        type: type,
+        total_cost: total_cost,
+        memberShare: new_expense,
+        title: title,
+        description: description,
+        category: category
+      }
+    });
+
+    console.log("Successfully updated an expense! Mapping it to groups...")
+
+    res.send({ status: '200', data: id });
+
+  } catch (e) {
+    console.log(e);
+    res.send({ status: '404', data: 'Internal Server Error' })
+  }
+})
+
 app.post('/group/delete/:id', async (req, res) => {
   let grp_id = req.params.id;
   let { token } = req.body
@@ -208,6 +268,7 @@ app.post('/group/delete/:id', async (req, res) => {
 })
 
 app.post('/expense/delete/:id', async (req, res) => {
+  console.log('Inside /expense/delete', req.body)
   const exp_id = req.params.id;
   const { token } = req.body;
 
@@ -234,7 +295,7 @@ app.post('/expense/delete/:id', async (req, res) => {
 
     // Delete the expense 
     await Expense.deleteOne({ id: exp_id });
-    res.send({status: '200', data: expense_details})
+    res.send({ status: '200', data: expense_details })
   } catch (e) {
     console.log(e);
     res.send({ status: '404', data: 'Internal Server Error!' })
@@ -262,6 +323,7 @@ app.get('/group/:id', async (req, res) => {
 
 // Create a group
 app.post('/group/create', async (req, res) => {
+  console.log('Inside /group/create');
   const { owner, type, name, email_ids, token } = req.body;
   let isVerify = verifyLoginUser(owner, token);
   if (!isVerify) {
@@ -303,6 +365,7 @@ app.post('/group/create', async (req, res) => {
       }
     }
 
+    console.log('Successfully added a group');
     res.send({ status: '200', data: grp_id });
   } catch (e) {
     console.log(e);
@@ -337,9 +400,34 @@ app.post('/group/add-member', async (req, res) => {
 
 });
 
+app.post('/group/update/:id', async(req, res) => {
+  console.log('Inside /group/update/:id');
+  const grp_id = req.params.id;
+  const { owner, name, email_ids, token } = req.body;
+
+  let isVerify = verifyLoginUser(owner, token);
+  if (!isVerify) {
+    return res.send({ status: '200', data: 'Unauthorized access' });
+  }
+
+  let result = await getUserIDsForEmailIDs(email_ids);
+
+  try {
+    await Group.updateOne({ id: grp_id }, {
+      $set: {
+        user_ids: result,
+        name: name,
+      }
+    });
+    res.send({ status: '200', data: 'Successfully updated group' })
+  } catch (e) {
+    res.send({ status: '404', data: 'Internal Server Error' })
+  }
+})
+
 // Add an expense to a group
 app.post('/group/add-expense', async (req, res) => {
-  console.log('/group/add-expense');
+  console.log('/group/add-expense', req.body);
   const { owner, grp_id, type, member_costs, total_cost, title, description, category, token } = req.body;
 
   let isVerify = verifyLoginUser(owner, token)
@@ -377,7 +465,9 @@ app.post('/group/add-expense', async (req, res) => {
     let new_expense = {};
     Object.keys(member_costs).forEach(member => {
       new_expense[member] = member_costs[member]
+      console.log(new_expense);
     });
+    console.log(new_expense)
     await Expense.create({
       id: expense_id,
       grp_id: grp_id,
@@ -386,7 +476,8 @@ app.post('/group/add-expense', async (req, res) => {
       memberShare: new_expense,
       title: title,
       description: description,
-      category: category
+      category: category,
+      owner: owner
     });
 
     console.log("Successfully created an expense! Mapping it to groups...")
@@ -457,8 +548,8 @@ app.post('/login', async (req, res) => {
   if (oldUser) {
     let storedPassword = oldUser.password;
     // let isSame = await bcrypt.compare(storedPassword, password);
-    if( storedPassword != password ) {
-      return res.send({ status: '400', data: 'Unauthorized access!'});
+    if (storedPassword != password) {
+      return res.send({ status: '400', data: 'Unauthorized access!' });
     }
     let token = jwt.sign({ user_id: oldUser.id }, JWT_SECRET);
     res.send({ status: '200', data: { id: oldUser.id, token: token } });
@@ -529,7 +620,7 @@ app.get('/user/:id', async (req, res) => {
   res.send({ status: '200', data: user_info });
 });
 
-app.get('/', ()=>{
+app.get('/', () => {
   return "Hello world";
 })
 
