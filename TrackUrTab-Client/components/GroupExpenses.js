@@ -3,6 +3,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import config from '../client_config.json';
 import { useEffect, useState } from "react";
 import GroupExpenseRenderer from "./GroupExpenseRenderer";
+import { useFocusEffect } from "expo-router";
+import React from "react";
 
 export default function GroupExpenses() {
     const [personalExpenses, setPersonalExpenses] = useState({});
@@ -53,9 +55,16 @@ export default function GroupExpenses() {
     }
 
     useEffect(()=>{
-        console.log('Group expense renderer');
+        console.log('Group expense rendering');
         fetchPersonalExpenses();
     }, []);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            loaded = false;
+            fetchPersonalExpenses(); // Call your fetch function when the screen is focused
+        }, [])
+    );
 
     return (
         <View style={{ flex : 1, padding: 20 }}>
