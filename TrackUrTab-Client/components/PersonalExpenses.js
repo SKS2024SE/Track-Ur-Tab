@@ -85,7 +85,7 @@ export default function PersonalExpenses() {
                     router.push('/addexpense');
                 }}
             >
-                <Icon name="add-circle" size={60} color="#000" />
+                <Icon name="add-circle" size={60} color="#33e0ff" />
             </TouchableOpacity>
         </View>
     );
