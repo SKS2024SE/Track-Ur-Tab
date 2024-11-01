@@ -122,5 +122,5 @@ This project thrives on the passion and curiosity of its contributors. If you’
 
 ## Our Motto
 
-Learning . Unlearning . Unleasing
+Learning . Unlearning . Unleasing <br />
 We promise technical support to anyone willing to contribute to the project.!
