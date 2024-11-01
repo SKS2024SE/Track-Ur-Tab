@@ -94,8 +94,13 @@ async function getUserIDsForEmailIDs(member_ids) {
   let i = 0, size = member_ids.length;
   let result = [];
   for (i = 0; i < size; i++) {
-    let user_info = await getUserDetailsWithEmailId(member_ids[i]);
-    result.push(user_info.id);
+    try {
+      let user_info = await getUserDetailsWithEmailId(member_ids[i]);
+      result.push(user_info.id);
+    } catch(e) {
+      console.log(e);
+      continue;
+    }
   }
   return result;
 }
@@ -242,6 +247,7 @@ app.post('/expense/update/:id', async (req, res) => {
 })
 
 app.post('/group/delete/:id', async (req, res) => {
+  console.log('Inside /group/delete');
   let grp_id = req.params.id;
   let { token } = req.body
 
