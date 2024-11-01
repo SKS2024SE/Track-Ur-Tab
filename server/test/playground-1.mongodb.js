@@ -10,6 +10,7 @@
 // https://www.mongodb.com/docs/mongodb-vscode/playgrounds/
 
 // Select the database to use.
+
 use('Track-Ur-Tab');
 
 db.getCollection('user_details').deleteMany({})
@@ -45,12 +46,15 @@ db.getCollection('expense_details').insertMany([
     { 'id': 'e1234', type: 'personal', owner: 'kswamin3', grp_id: '1234', memberShare: {'kswamin3': -30}, total_cost: 30, title: 'exp 1',  description: 'On some date', category: 'Rent'},
     { 'id': 'e12341', type: 'personal', owner: 'kswamin3', grp_id: '1234', memberShare: {'kswamin3': -30}, total_cost: 30, title: 'exp 2', description: 'On some date', category: 'Rent'},
     { 'id': 'e12342', type: 'personal', owner: 'kswamin3', grp_id: '1234', memberShare: {'kswamin3': -30}, total_cost: 30, title: 'exp 3', description: 'On some date', category: 'Rent'},
-    { 'id': 'e1235', type: 'personal', owner: 'sshunmu2', grp_id: '1235', memberShare: {'sshunmu2': -30}, total_cost: 30, title: 'exp 1', description: 'On some date', category: 'Rent'},
-    { 'id': 'e12351', type: 'personal', owner: 'sshunmu2', grp_id: '1235', memberShare: {'sshunmu2': -30}, total_cost: 30, title: 'exp 2', description: 'On some date', category: 'Rent'},
-    { 'id': 'e12352', type: 'personal', owner: 'sshunmu2', grp_id: '1235', memberShare: {'sshunmu2': -30}, total_cost: 30, title: 'exp 3', description: 'On some date', category: 'Rent'},
+    { 'id': 'e1235', type: 'personal', owner: 'sshunmu2', grp_id: '1235', memberShare: {'sshunmu2': -30}, total_cost: 30, title: 'exp 1', description: 'On some date', category: 'Electricity'},
+    { 'id': 'e12351', type: 'personal', owner: 'sshunmu2', grp_id: '1235', memberShare: {'sshunmu2': -40}, total_cost: 40, title: 'exp 2', description: 'On some date', category: 'Rent'},
+    { 'id': 'e12352', type: 'personal', owner: 'sshunmu2', grp_id: '1235', memberShare: {'sshunmu2': -30}, total_cost: 30, title: 'exp 3', description: 'On some date', category: 'Gas'},
+    { 'id': 'e12353', type: 'personal', owner: 'sshunmu2', grp_id: '1235', memberShare: {'sshunmu2': -40}, total_cost: 40, title: 'exp 4', description: 'On some date', category: 'Gas'},
     { 'id': 'e1236', type: 'personal', owner: 'sshunmu', grp_id: '1236', memberShare: {'sshunmu': -30}, total_cost: 30, title: 'exp 1', description: 'On some date', category: 'Rent'},
-    { 'id': 'e12361', type: 'personal', owner: 'sshunmu', grp_id: '1236', memberShare: {'sshunmu': -30}, total_cost: 30, title: 'exp 2', description: 'On some date', category: 'Rent'},
-    { 'id': 'e12362', type: 'personal', owner: 'sshunmu', grp_id: '1236', memberShare: {'sshunmu': -30}, total_cost: 30, title: 'exp 3', description: 'On some date', category: 'Rent'}
+    { 'id': 'e12361', type: 'personal', owner: 'sshunmu', grp_id: '1236', memberShare: {'sshunmu': -30}, total_cost: 30, title: 'exp 2', description: 'On some date', category: 'Deposit'},
+    { 'id': 'e12354', type: 'personal', owner: 'sshunmu2', grp_id: '1235', memberShare: {'sshunmu2': -20}, total_cost: 20, title: 'exp 5', description: 'On some date', category: 'Deposit'},
+    { 'id': 'e12362', type: 'personal', owner: 'sshunmu', grp_id: '1236', memberShare: {'sshunmu': -30}, total_cost: 30, title: 'exp 3', description: 'On some date', category: 'Electricity'},
+    { 'id': 'e12362', type: 'personal', owner: 'sshunmu', grp_id: '1236', memberShare: {'sshunmu': -30}, total_cost: 30, title: 'exp 3', description: 'On some date', category: 'Electricity'}
 ])
 
 // use('Track-Ur-Tab')

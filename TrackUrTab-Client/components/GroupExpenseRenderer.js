@@ -147,8 +147,8 @@ export default function GroupExpenseRenderer({ data }) {
         <ExpenseCard title={item.title} amount={item.total_cost} description={item.description} tooltip={item.owner} image={undefined} callbacks={item.callbacks} exp_id={item.id} owner={item.owner} />
     );
 
-    return (
-        <View style={{ borderColor: 'black' }}>
+    return ( 
+        <View style={{ borderColor: 'black', flex : 1, padding: -10}}>
             <FlatList
                 data={formatData()}
                 renderItem={renderItem}

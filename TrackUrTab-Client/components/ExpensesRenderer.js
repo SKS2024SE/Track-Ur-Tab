@@ -1,49 +1,49 @@
-import { router, useFocusEffect } from "expo-router";
+import React, { useState, useCallback } from "react";
+import { View, FlatList, Text, Dimensions, StyleSheet, RefreshControl, Animated, ScrollView, Alert } from "react-native";
+import { PieChart, BarChart } from "react-native-chart-kit";
 import ExpenseCard from "./ExpenseCard";
-import { View, FlatList, Alert } from "react-native";
-import config from '../client_config.json';
+import { PanGestureHandler, GestureHandlerRootView } from "react-native-gesture-handler";
 import { useData } from "../app/dataprovider";
-import { useEffect, useState } from "react";
-import React from "react";
+import { router, useFocusEffect } from "expo-router";
+import config from '../client_config.json';
 
 export default function ExpensesRenderer({ data }) {
+    const screenWidth = Dimensions.get("window").width;
+    const [refreshing, setRefreshing] = useState(false);
+    const [chartType, setChartType] = useState("pie");
+    const translateX = new Animated.Value(0);
     const { setData } = useData();
-    const [flatListData, setFlatListData] = useState([]);
+
+    const handleRefresh = useCallback(() => {
+        setRefreshing(true);
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 2000);
+    }, []);
 
     const formatData = () => {
         let res = [];
-        console.log('Personal Expenses from Expenses Renderer: ', data);
         data.expenses?.forEach(exp => {
             try {
-                console.log('Expense owner: ', exp.id);
                 let ownerDeets = data.user_details[exp.owner].email;
                 let current_user = data.current_user.email;
-                let owner = '';
-                if (ownerDeets == current_user) {
-                    owner = 'You';
-                } else {
-                    owner = data.current_user.name;
-                }
-
-                // Find other users 
+                let owner = ownerDeets === current_user ? 'You' : data.current_user.name;
                 let collapsibleData = [];
                 let members = Object.keys(exp.memberShare);
+                
                 members.forEach(member => {
                     let userDeets = data.user_details[member];
-                    let cost = exp.memberShare[member] < 0 ? exp.memberShare[member] * -1 : exp.memberShare[member];
+                    let cost = Math.abs(exp.memberShare[member]);
 
-                    if (ownerDeets == userDeets.email && userDeets.email == current_user) {
-                        let x = 'You paid ' + cost + ' dollars\n';
-                        collapsibleData = x + collapsibleData;
-                    } else if (ownerDeets == userDeets.email && userDeets.email != current_user) {
-                        let x = userDeets.name + ' paid ' + cost + ' dollars\n';
-                        collapsibleData = x + collapsibleData;
-                    } else if (ownerDeets != userDeets.email && userDeets.email == current_user) {
-                        collapsibleData += 'You owe ' + cost + ' dollars to ' + data.user_details[exp.owner].name + '\n';
+                    if (ownerDeets === userDeets.email && userDeets.email === current_user) {
+                        collapsibleData = `You paid ${cost} dollars\n` + collapsibleData;
+                    } else if (ownerDeets === userDeets.email) {
+                        collapsibleData = `${userDeets.name} paid ${cost} dollars\n` + collapsibleData;
+                    } else if (userDeets.email === current_user) {
+                        collapsibleData += `You owe ${cost} dollars to ${data.user_details[exp.owner].name}\n`;
                     } else {
-                        collapsibleData += userDeets.name + ' owes ' + cost + ' dollars to ' + data.user_details[exp.owner].name + '\n';
+                        collapsibleData += `${userDeets.name} owes ${cost} dollars to ${data.user_details[exp.owner].name}\n`;
                     }
-
                 });
 
                 res.push({
@@ -57,19 +57,19 @@ export default function ExpensesRenderer({ data }) {
                     collapsibleData: collapsibleData,
                     callback: { details: navigateToExpenseInfoPage, edit: editExpense, delete: deleteExpense }
                 })
+
             } catch (e) {
-                console.log('Inproper data got from server', exp);
+                console.log('Improper data from server', exp);
                 console.log(e);
             }
         });
-        // setFlatListData(res);
         return res;
-    }
-
+    };
 
     const navigateToExpenseInfoPage = (exp_id) => {
         console.log('Expense Info: ', exp_id);
-    }
+    };
+
     const editExpense = (exp_id) => {
         console.log('Edit expense');
         let expense_details = {};
@@ -154,23 +154,154 @@ export default function ExpensesRenderer({ data }) {
 
     };
 
+    const aggregateExpensesByCategory = () => {
+        const categoryTotals = {};
+        data.expenses?.forEach(exp => {
+            const category = exp.category || "Other";
+            categoryTotals[category] = (categoryTotals[category] || 0) + exp.total_cost;
+        });
+
+        return Object.keys(categoryTotals).map(category => ({
+            name: category,
+            total: categoryTotals[category],
+            color: getRandomColor(),
+            legendFontColor: "#7F7F7F",
+            legendFontSize: 12
+        }));
+    };
+
+    const aggregateExpensesForBarChart = () => {
+        const categories = [];
+        const totals = [];
+
+        data.expenses?.forEach(exp => {
+            const category = exp.category || "Other";
+            if (!categories.includes(category)) {
+                categories.push(category);
+                totals.push(exp.total_cost);
+            } else {
+                totals[categories.indexOf(category)] += exp.total_cost;
+            }
+        });
+
+        return { categories, totals };
+    };
+
+    const getRandomColor = () => {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    };
+
     const renderItem = ({ item }) => (
-        <ExpenseCard collapsibleData={item.collapsibleData} subtitle={item.subtitle} title={item.title} amount={item.total_cost} description={item.description} tooltip={item.owner} image={undefined} callbacks={item.callback} exp_id={item.id} owner={item.owner} />
+        <ExpenseCard
+            collapsibleData={item.collapsibleData}
+            subtitle={item.subtitle}
+            title={item.title}
+            amount={item.total_cost}
+            description={item.description}
+            tooltip={item.owner}
+            image={undefined}
+            callbacks={item.callback}
+            exp_id={item.id}
+            owner={item.owner}
+        />
     );
 
-    // useEffect( () => {
-    //     formatData();
-    // }, [] );
-    
+    const handleSwipe = (event) => {
+        const { translationX } = event.nativeEvent;
+        if (translationX < -50) {
+            setChartType("bar");
+        }
+        if (translationX > 50) {
+            setChartType("pie");
+        }
+    };
+
     return (
-        <View style={{ borderColor: 'black' }}>
-            <FlatList
-                data={formatData()}
-                renderItem={renderItem}
-                keyExtractor={item => item.id}
-            />
-        </View>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+            <ScrollView
+                style={{ flex: 1 }}
+                contentContainerStyle={styles.scrollContainer}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={handleRefresh}
+                        colors={["#ff6347"]}
+                    />
+                }
+            >
+                <Text style={styles.chartTitle}>Budget</Text>
+                <PanGestureHandler onGestureEvent={handleSwipe}>
+                    <Animated.View style={{ transform: [{ translateX }] }}>
+                        {chartType === "pie" ? (
+                            <PieChart
+                                data={aggregateExpensesByCategory()}
+                                width={screenWidth - 30}
+                                height={180}
+                                chartConfig={{
+                                    backgroundColor: "#ffffff",
+                                    backgroundGradientFrom: "#ffffff",
+                                    backgroundGradientTo: "#ffffff",
+                                    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                                }}
+                                accessor="total"
+                                backgroundColor="transparent"
+                                paddingLeft="15"
+                                absolute
+                                style={{ borderRadius: 15 }}
+                            />
+                        ) : (
+                            <BarChart
+                                data={{
+                                    labels: aggregateExpensesForBarChart().categories,
+                                    datasets: [
+                                        {
+                                            data: aggregateExpensesForBarChart().totals
+                                        }
+                                    ]
+                                }}
+                                width={screenWidth - 30}
+                                height={180}
+                                chartConfig={{
+                                    backgroundColor: "#ffffff",
+                                    backgroundGradientFrom: "#ffffff",
+                                    backgroundGradientTo: "#ffffff",
+                                    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                                    barPercentage: 0.5
+                                }}
+                                style={{ borderRadius: 15 }}
+                            />
+                        )}
+                    </Animated.View>
+                </PanGestureHandler>
+                <FlatList
+                    data={formatData()}
+                    renderItem={renderItem}
+                    keyExtractor={item => item.id}
+                    scrollEnabled={false}  // Disable FlatList's own scrolling
+                    contentContainerStyle={styles.flatListContent}
+                />
+            </ScrollView>
+        </GestureHandlerRootView>
     );
-    
 }
 
+const styles = StyleSheet.create({
+    scrollContainer: {
+        paddingBottom: 20,  // Prevent overlap with bottom elements
+    },
+    chartTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginTop: 10,
+        textAlign: 'center',
+        color: '#333'
+    },
+    flatListContent: {
+        paddingBottom: 40,  // Extra padding for comfortable scrolling
+    },
+});

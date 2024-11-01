@@ -138,7 +138,7 @@ const CreateEditGroup = ({ data = { type: 'newgroup' } }) => {
         <Text style={styles.addButton}>+ Add Email</Text>
       </TouchableOpacity>
 
-      <Button title="Submit" onPress={handleSave} />
+      <Button style={styles.addButton} title="Submit" onPress={handleSave} />
     </View>
   );
 };
@@ -168,6 +168,7 @@ const styles = StyleSheet.create({
     color: 'blue',
     marginBottom: 20,
     fontSize: 16,
+    borderRadius: 10,
   },
   deleteButton: {
     color: 'red',
