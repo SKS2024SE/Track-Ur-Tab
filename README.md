@@ -60,7 +60,7 @@ Currently the application stores User and Group data on MongoDB Real-Time Databa
 - Embedded Emulator/ USB debugging on android device
 
  
-### Installation Instructions for React Native
+## Installation Instructions for React Native
 
 ### Step 1: Install Node.js  
 Ensure you have [Node.js](https://nodejs.org/) installed on your machine. *(I used a Node.js pre-installer)*
@@ -116,7 +116,11 @@ Members
  - Sandhiya Shunmugavel ( sshunmu2@ncsu.edu )
  - Sanjaey Shunmuga Sundaram ( sshunmu@ncsu.edu )
 
-Project Funding:
+## Project Funding:
+
 This project thrives on the passion and curiosity of its contributors. If you’re interested in supporting us, whether through financial contributions or by offering your skills and time, we’d love to hear from you! Please feel free to reach out and join us on this journey.
 
+## Our Motto
+
+Learning . Unlearning . Unleasing
 We promise technical support to anyone willing to contribute to the project.!
