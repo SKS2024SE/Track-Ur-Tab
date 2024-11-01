@@ -1,5 +1,5 @@
 # TRACK UR TAB
-a smart way to track your expenses
+A smart way to track your expenses
 
 The user base for expense tracker software includes young professionals, students, families, and freelancers, all seeking better budget management and spending insights. From debt managers and savers to corporate teams and retirees, it cater to diverse needs by enabling shared expense tracking, goal setting, helping users make informed financial decisions.
 
