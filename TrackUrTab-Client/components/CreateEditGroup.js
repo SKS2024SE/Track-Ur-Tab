@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import config from '../client_config.json';
-import { router } from 'expo-router';
+import { router, useNavigation } from 'expo-router';
 
 const CreateEditGroup = ({ data = { type: 'newgroup' } }) => {
   const [title, setTitle] = useState('');
   const [emails, setEmails] = useState([]);
+  const navigation = useNavigation();
 
   useEffect(() => {
     // Set title and emails only if data is provided
@@ -41,6 +42,9 @@ const CreateEditGroup = ({ data = { type: 'newgroup' } }) => {
   };
 
   const handleSave = async () => {
+    console.log('Title: ', data.type);
+    emails.push(data.current_user.email);
+    
     if( !title ) {
       Alert.alert("Empty Title", "Kindly add a title to save");
       return;
@@ -65,6 +69,7 @@ const CreateEditGroup = ({ data = { type: 'newgroup' } }) => {
           body: JSON.stringify(reqBody)
         })
         response = await response.json();
+        console.log('Response: ', response);
         if( response.status == '200' ) {
           router.back();
         } else {
@@ -76,6 +81,7 @@ const CreateEditGroup = ({ data = { type: 'newgroup' } }) => {
       } 
 
     } else if( data.type == 'newgroup' ) {
+      console.log('New group creation started!');
       let reqBody = {
         owner: data.current_user.id,
         type: 'group',
@@ -93,8 +99,8 @@ const CreateEditGroup = ({ data = { type: 'newgroup' } }) => {
           body: JSON.stringify(reqBody)
         })
         response = await response.json();
-        if( response.data == '200' ) {
-          router.back();
+        if( response.status == '200' ) {
+          navigation.navigate('homescreen', { screen: 'group' });
         }
       } catch(e) {
         Alert.alert('Error occurred when adding a group', 'Please try again later');
