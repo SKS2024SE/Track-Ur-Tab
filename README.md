@@ -29,7 +29,8 @@ Expense tracker software helps users improve financial awareness, manage budgets
  
  ## Project1 Enhancement Features
  
- - Ability to create Groups and track group expenses. Split expenses proportionally, while reducing the total number of Transactions.
+ - Ability to create Groups and track group expenses.
+ - Split expenses proportionally, while reducing the total number of Transactions.
  - Expenditure Analytics for both Personal and Group expenditures.
  - Ability to create custom categories
  - A fresh cross platform compatible UI
@@ -115,4 +116,4 @@ Members
 Project Funding:
 This project thrives on the passion and curiosity of its contributors. If you’re interested in supporting us, whether through financial contributions or by offering your skills and time, we’d love to hear from you! Please feel free to reach out and join us on this journey.
 
-We promise technical support to anyone willing to contribute to the project.
+We promise technical support to anyone willing to contribute to the project.!
