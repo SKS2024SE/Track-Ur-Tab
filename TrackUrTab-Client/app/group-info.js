@@ -1,9 +1,6 @@
 // 
-import { useRouter } from "expo-router";
-import { View, Text } from "react-native";
 import GroupInfo from "../components/GroupInfo";
 import { useData } from "./dataprovider";
-import { useEffect, useState } from "react";
 
 export default function GroupInfoRoute() {
     const { data } = useData();

@@ -323,6 +323,7 @@ app.get('/group/:id', async (req, res) => {
 
 // Create a group
 app.post('/group/create', async (req, res) => {
+  console.log('Inside /group/create');
   const { owner, type, name, email_ids, token } = req.body;
   let isVerify = verifyLoginUser(owner, token);
   if (!isVerify) {
@@ -364,6 +365,7 @@ app.post('/group/create', async (req, res) => {
       }
     }
 
+    console.log('Successfully added a group');
     res.send({ status: '200', data: grp_id });
   } catch (e) {
     console.log(e);
@@ -397,6 +399,31 @@ app.post('/group/add-member', async (req, res) => {
   }
 
 });
+
+app.post('/group/update/:id', async(req, res) => {
+  console.log('Inside /group/update/:id');
+  const grp_id = req.params.id;
+  const { owner, name, email_ids, token } = req.body;
+
+  let isVerify = verifyLoginUser(owner, token);
+  if (!isVerify) {
+    return res.send({ status: '200', data: 'Unauthorized access' });
+  }
+
+  let result = await getUserIDsForEmailIDs(email_ids);
+
+  try {
+    await Group.updateOne({ id: grp_id }, {
+      $set: {
+        user_ids: result,
+        name: name,
+      }
+    });
+    res.send({ status: '200', data: 'Successfully updated group' })
+  } catch (e) {
+    res.send({ status: '404', data: 'Internal Server Error' })
+  }
+})
 
 // Add an expense to a group
 app.post('/group/add-expense', async (req, res) => {

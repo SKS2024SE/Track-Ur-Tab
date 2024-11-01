@@ -1,7 +1,8 @@
 import ExpenseCard from "./ExpenseCard";
-import { View, FlatList } from "react-native";
+import { View, FlatList, StyleSheet, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
 import { useData } from '../app/dataprovider';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export default function GroupExpenseRenderer({ data }) {
     const router = useRouter();
@@ -18,6 +19,7 @@ export default function GroupExpenseRenderer({ data }) {
         groups.forEach( grp => {
             let grp_details = data.groups[grp];
 
+            console.log('Group details: ', grp_details);
             // See who is the total cost  
             let total_cost = 0;
             let expenses = grp_details.expenses;
@@ -60,6 +62,21 @@ export default function GroupExpenseRenderer({ data }) {
 
     const editGroupDetails = ( grp_id ) =>{
         console.log('Edit group: ', grp_id);
+        // console.log({
+        //     type: 'editgroup',
+        //     grp_id: grp_id,
+        //     current_user: data.current_user,
+        //     group_details: data.groups[grp_id]
+        // });
+
+        setData({
+            type: 'editgroup',
+            grp_id: grp_id,
+            current_user: data.current_user,
+            group_details: data.groups[grp_id]
+        })
+
+        router.push('/newgroup');
     }
 
     const deleteGroup = ( grp_id ) => {
@@ -77,6 +94,33 @@ export default function GroupExpenseRenderer({ data }) {
                 renderItem={renderItem}
                 keyExtractor={item => item.id}
             />
+            <TouchableOpacity
+                style={styles.floatingButton}
+                onPress={() => {
+                    setData({
+                        type: 'newgroup',
+                        current_user: data.current_user
+                    })
+                    router.push('/newgroup')
+                }}
+            >
+                <Icon name="add-circle" size={60} color="#33e0ff" />
+            </TouchableOpacity>
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    floatingButton: {
+        position: 'absolute',
+        right: 20,
+        bottom: 20,
+        // Optional: add shadow for iOS
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        // Optional: add elevation for Android
+        elevation: 5,
+    }
+});
