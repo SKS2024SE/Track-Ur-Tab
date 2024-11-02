@@ -256,25 +256,44 @@ export default function ExpensesRenderer({ data }) {
                             />
                         ) : (
                             <BarChart
-                                data={{
-                                    labels: aggregateExpensesForBarChart().categories,
-                                    datasets: [
-                                        {
-                                            data: aggregateExpensesForBarChart().totals
-                                        }
-                                    ]
-                                }}
-                                width={screenWidth - 30}
-                                height={180}
-                                chartConfig={{
-                                    backgroundColor: "#ffffff",
-                                    backgroundGradientFrom: "#ffffff",
-                                    backgroundGradientTo: "#ffffff",
-                                    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                                    barPercentage: 0.5
-                                }}
-                                style={{ borderRadius: 15 }}
-                            />
+                            data={{
+                                labels: aggregateExpensesForBarChart().categories,
+                                datasets: [
+                                    {
+                                        data: aggregateExpensesForBarChart().totals,
+                                        color: (opacity = 1) => `rgba(0, 123, 255, ${opacity})`, // Custom color for bars
+                                        strokeWidth: 2, // Optional: adds stroke to bars
+                                    }
+                                ]
+                            }}
+                            width={screenWidth - 48}
+                            height={200} // Height of the chart
+                            chartConfig={{
+                                backgroundColor: "#ffffff",
+                                backgroundGradientFrom: "#e0f7fa", // Light background gradient
+                                backgroundGradientTo: "#ffffff", // White background
+                                color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`, // Color for axes
+                                labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`, // Color for labels
+                                barPercentage: 0.6, // Adjust bar width
+                                decimalPlaces: 2, // Show decimal places for totals
+                                propsForLabels: {
+                                    fontSize: 12, // Font size for labels
+                                    fontWeight: 'bold', // Bold labels
+                                    fill: 'rgba(0, 0, 0, 0.7)', // Label color
+                                },
+                                style: {
+                                    marginVertical: 8,
+                                    marginHorizontal: 16,
+                                    padding: 0, // Remove padding around the chart
+                                }
+                            }}
+                            style={{
+                                borderRadius: 0, // Remove border radius
+                                shadowColor: "transparent", // Remove shadow color
+                                elevation: 0, // Remove shadow on Android
+                            }}
+                            fromZero={true} // Optional: start bars from zero
+                        />
                         )}
                     </Animated.View>
                 </PanGestureHandler>
