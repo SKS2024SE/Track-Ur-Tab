@@ -12,7 +12,7 @@ Expense tracker software helps users improve financial awareness, manage budgets
 [![License](https://img.shields.io/badge/License-MIT-purple.svg?style=flat)](https://github.com/SKS2024SE/XpensAuditor/blob/main/LICENSE)
 [![Language](https://img.shields.io/badge/Language-Java-blue.svg?style=flat)](https://github.com/SKS2024SE/XpensAuditor/search?l=java)
 [![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](https://github.com/SKS2024SE/XpensAuditor/blob/main/README.md)
-[![GitHub Release](https://img.shields.io/github/release/AtharvaGole/XpensAuditor.svg)](https://github.com/SKS2024SE/XpensAuditor/releases)
+[![GitHub Release](https://img.shields.io/github/release/AtharvaGole/XpensAuditor.svg)](https://github.com/SKS2024SE/Track-Ur-Tab/releases))
 [![Open Issues](https://img.shields.io/github/issues/AtharvaGole/XpensAuditor)](https://github.com/SKS2024SE/XpensAuditor/issues)
 [![Build-And-Test](https://github.com/AtharvaGole/XpensAuditor/actions/workflows/android.yml/badge.svg)](https://github.com/SKS2024SE/XpensAuditor/actions/workflows/android.yml)
 [![GitHub Repo Size](https://img.shields.io/github/repo-size/AtharvaGole/XpensAuditor.svg)](https://img.shields.io/github/repo-size/SKS2024SE/XpensAuditor.svg)
