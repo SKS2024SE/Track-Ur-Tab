@@ -40,7 +40,8 @@ Expense tracker software helps users improve financial awareness, manage budgets
  - Ability to split expenses in group propotionally
  - Ability to calculate credit-debit of group expenses ( Who owes what )
  - Ability to assign the things identified from the previous step to the respective owners in group calculations
-
+   
+![Component Architecture.png](https://raw.githubusercontent.com/SKS2024SE/Track-Ur-Tab/refs/heads/main/Documentation/Component%20Architecture.png)
 ## Demo
 
 [Watch the Track Ur Tab Demo !!!](https://youtu.be/CKg4u8rYCi0?si=s5vSQ-rhXNPwLs3p)
