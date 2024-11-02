@@ -43,6 +43,7 @@ Expense tracker software helps users improve financial awareness, manage budgets
 
 ## Demo
 
+[![Watch the Track Ur Tab Demo](https://youtu.be/CKg4u8rYCi0?si=s5vSQ-rhXNPwLs3p)
 
 ## Scalability
 Currently the application stores User and Group data on MongoDB Real-Time Database. Every smartphone with the app running needs to establish a connection to the database in order to sync data with the cloud. The app will run even without an internet connection, but in order to view the latest transactions of a group, you will need to query data from the database.
