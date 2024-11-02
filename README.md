@@ -7,7 +7,7 @@ Expense tracker software helps users improve financial awareness, manage budgets
 
 
 [![Code Coverage](https://codecov.io/gh/AtharvaGole/XpensAuditor/branch/main/graphs/badge.svg)](https://codecov.io/gh/SKS2024SE/XpensAuditor/branch/main)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7402784.svg)](https://doi.org/10.5281/zenodo.7402784)
+[![DOI](https://zenodo.org/badge/879040333.svg)](https://doi.org/10.5281/zenodo.14027352)
 [![Collaborators](https://img.shields.io/badge/Collaborators-3-orange.svg?style=flat)](https://github.com/SKS2024SE/Track-Ur-Tab/graphs/contributors)
 [![License](https://img.shields.io/badge/License-MIT-purple.svg?style=flat)](https://github.com/SKS2024SE/XpensAuditor/blob/main/LICENSE)
 [![Language](https://img.shields.io/badge/Language-Java-blue.svg?style=flat)](https://github.com/SKS2024SE/XpensAuditor/search?l=java)
