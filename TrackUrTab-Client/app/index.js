@@ -1,42 +1,16 @@
-// // /app/index.js
-// import React, { useState } from "react";
-// import HomeScreen from "../components/HomeScreen";
-// import LoginScreen from "../components/Login"; // Import the Login component
-// import SignupScreen from "../components/SignUp"; // Import the Signup component
-// import { View } from "react-native";
-
-// export default function App() {
-//   const [currentScreen, setCurrentScreen] = useState("home");
-
-//   const handleNavigate = (screen) => {
-//     setCurrentScreen(screen);
-//   };
-
-//   const renderCurrentScreen = () => {
-//     switch (currentScreen) {
-//       case "home":
-//         return <HomeScreen onNavigate={handleNavigate} />;
-//       case "login":
-//         return <LoginScreen onNavigate={handleNavigate} />;
-//       case "signup":
-//         return <SignupScreen onNavigate={handleNavigate} />;
-//       default:
-//         return <HomeScreen onNavigate={handleNavigate} />;
-//     }
-//   };
-
-//   return <View style={{ flex: 1 }}>{renderCurrentScreen()}</View>;
-// }
-
-// /app/index.js (Home Screen)
-import { View, Text, Button, Image, StyleSheet } from "react-native";
-import { useRouter } from "expo-router";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+// LoginScreen.jsx
+import { React, useState } from 'react';
+import { Link, useRouter } from "expo-router";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import config from '../client_config.json';
 import { useEffect } from "react";
 
-export default function HomeScreen() {
+const LoginScreen = ({ navigation }) => {
   const router = useRouter();
+  const [email, setEmail] = useState(""); // State for username
+  const [password, setPassword] = useState(""); // State for password
+
   const getUserLoginDetails = async () => {
     const user_details = await AsyncStorage.getItem(config.user_storage_key);
     if( user_details ) {
@@ -48,41 +22,126 @@ export default function HomeScreen() {
   useEffect(()=> {
     getUserLoginDetails();
   }, []);
+
+  const onLogin = async () => {
+    console.log('Inside /login');
+    let url = `http://${config.server_ip}:${config.server_port}/login`;
+    let user_data = {
+      email: email, 
+      password: password
+    };
+
+    try {
+      console.log(user_data);
+      let response = await fetch(url, {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(user_data)
+      });
+      response = await response.json()
+      console.log(response);
+      if( response.status == '200' ) {
+        console.log(response);
+        // Store the user token 
+        await AsyncStorage.setItem(config.user_storage_key, JSON.stringify({ id: response.data.id, email: email, token: response.data.token }));
   
+        // Route to the Home screen containing personal expenses and group expenses 
+        router.push('/homescreen');
+      } else {
+        console.log(response.data);
+      }
+    } catch(e) {
+      // Handle exception
+      console.log(e)
+    }
+  }
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome to My App!</Text>
+
       <Image
-        source={{ uri: 'https://via.placeholder.com/150' }} // Replace with your logo/image URL
+        source={require('../assets/images/tutlogo.png')}
+        //source={require('./assets/images/tutlogo.png')}
         style={styles.image}
+
+        //source={{ uri: 'TrackUrTab-Client/assets/images/tutlogo.png' }}
+        //style={{ width: 100, height: 100 }}
       />
-      <View style={styles.buttonContainer}>
-        <Button title="Login" onPress={() => router.push("/login")} />
-        {/* <Button title="Signup" onPress={() => router.push("/signup")} /> */}
-      </View>
+      <Text style={styles.title}>Login</Text>
+      <TextInput
+        placeholder="Email"
+        style={styles.input}
+        onChangeText={setEmail}
+      />
+      <TextInput
+        placeholder="Password"
+        secureTextEntry
+        style={styles.input}
+        onChangeText={setPassword}
+      />
+
+      <Text>
+        Do not have an account? <Link href='/signup'> Register here </Link>
+      </Text>
+
+      <TouchableOpacity
+        style = {styles.button}
+        title="Login"
+        onPress={async () => {
+          await onLogin();
+        }}
+        >
+          <Text style = {styles.buttonText}>Login</Text>
+      </TouchableOpacity>
+
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor:'#ffffff',
+    padding: 16,
+    paddingTop: 100
   },
   title: {
-    fontSize: 28,
-    fontWeight: "bold",
-    marginBottom: 20,
+    fontSize: 24,
+    marginBottom: 16,
+    alignItems: 'center',
+    marginTop: 150,
   },
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 12,
+    paddingHorizontal: 8,
+    borderRadius: 10,
+  },
+  button: {
+    backgroundColor: '#33e0ff', 
+    paddingVertical: 10,
+    paddingHorizontal: 100,
+    borderRadius: 10, 
+    alignItems: 'center', 
+    marginTop: 30,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+
   image: {
-    width: 150,
-    height: 150,
+    width: 300,
+    height: 50,
     marginBottom: 20,
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    width: "100%",
-  },
+    marginTop: 0,
+  }
+
 });
+
+export default LoginScreen;

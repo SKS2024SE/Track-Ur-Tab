@@ -2,7 +2,7 @@
 import { Link, useRouter } from 'expo-router';
 import { React, useState } from 'react';
 import config from '../client_config.json';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
 const SignupScreen = () => {
   const router = useRouter();
@@ -53,6 +53,18 @@ const SignupScreen = () => {
 
   return (
     <View style={styles.container}>
+      
+      <Image
+        source={require('../assets/images/tutlogo.png')}
+        //source={require('./assets/images/tutlogo.png')}
+        style={styles.image}
+
+        //source={{ uri: 'TrackUrTab-Client/assets/images/tutlogo.png' }}
+        //style={{ width: 100, height: 100 }}
+      />
+
+      
+
       <Text style={styles.title}>Register</Text>
       <TextInput
         placeholder="Phone number"
@@ -76,14 +88,19 @@ const SignupScreen = () => {
         onChangeText={setPassword}
       />
       <Text>
-        Already have an account? <Link href='/login'>Login here</Link>
+        Already have an account? <Link href='/login' style={{ textDecorationLine: 'underline' }}>Login here</Link>
       </Text>
-      <Button
+
+      <TouchableOpacity
+        style = {styles.button}
         title="Register"
         onPress={async () => {
           await handleSignUp();
         }}
-      />
+        >
+          <Text style = {styles.buttonText}>SignUp</Text>
+        </TouchableOpacity>
+      
     </View>
   );
 };
@@ -91,12 +108,14 @@ const SignupScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    backgroundColor:'#ffffff',
     padding: 16,
+    paddingTop: 100,
   },
   title: {
     fontSize: 24,
     marginBottom: 16,
+    paddingTop: 50,
   },
   input: {
     height: 40,
@@ -104,7 +123,32 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 12,
     paddingHorizontal: 8,
+    borderRadius: 10,
   },
+
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+
+  button: {
+    backgroundColor: '#33e0ff', 
+    paddingVertical: 10,
+    paddingHorizontal: 100,
+    borderRadius: 10, 
+    alignItems: 'center', 
+    marginTop: 30,
+  },
+
+  image: {
+    width: 300,
+    height: 50,
+    marginBottom: 20,
+    marginTop: 0,
+    justifyContent: 'center',
+  },
+
 });
 
 export default SignupScreen;

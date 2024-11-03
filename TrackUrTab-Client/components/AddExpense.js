@@ -13,7 +13,7 @@ const AddExpense = ({ data }) => {
 
     const grpId = data.grp_id; // Static group ID
 
-    const categories = ['Loan', 'Transport', 'Food', 'Education', 'Household', 'Health', 'Gift', 'Workout'];
+    const categories = ['Loan', 'Transport', 'Food', 'Education', 'Household', 'Health', 'Gift', 'Workout', 'Miscellaneous'];
 
     const handleCategoryPress = (category) => {
         setSelectedCategory(category);
