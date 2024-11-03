@@ -107,7 +107,7 @@ async function getUserIDsForEmailIDs(member_ids) {
 
 // Fetch personal expenses of a user 
 app.post('/user/fetch-exp', async (req, res) => {
-  console.log('Inside /user/fetch-exp');
+  console.log('Inside /user/fetch-exp', req.body);
   const { user_id, token } = req.body;
   let isVerifiedReq = verifyLoginUser(user_id, token);
   if (!isVerifiedReq) {
@@ -121,6 +121,9 @@ app.post('/user/fetch-exp', async (req, res) => {
     }
     let personal_expenses_id = user.personal_exp;
     let personal_expenses = await getUserExpenses(personal_expenses_id);
+    personal_expenses.user_details = Object.keys(personal_expenses.user_details).length <= 0 ? {[user.id]: user} : personal_expenses.user_details;
+    console.log('Personal expenses: ', personal_expenses);
+
     res.send({ status: '200', data: personal_expenses });
   } catch (e) {
     console.log(e);
@@ -538,6 +541,15 @@ app.post('/register', async (req, res) => {
       personal_exp: personal_grp_id,
       group_exp: []
     });
+    await Group.create({
+      id: personal_grp_id,
+      owner: user_id,
+      type: 'personal',
+      name: name,
+      user_ids: [user_id],
+      exp_ids: []
+    })
+
     res.send({ status: '200', data: user_id });
   } catch (e) {
     console.log(e);
