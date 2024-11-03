@@ -2,7 +2,7 @@
 import { React, useState } from 'react';
 import { Link, useRouter } from "expo-router";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import config from '../client_config.json';
 
 const LoginScreen = ({ navigation }) => {
@@ -47,6 +47,15 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+
+      <Image
+        source={require('../assets/images/tutlogo.png')}
+        //source={require('./assets/images/tutlogo.png')}
+        style={styles.image}
+
+        //source={{ uri: 'TrackUrTab-Client/assets/images/tutlogo.png' }}
+        //style={{ width: 100, height: 100 }}
+      />
       <Text style={styles.title}>Login</Text>
       <TextInput
         placeholder="Email"
@@ -59,15 +68,20 @@ const LoginScreen = ({ navigation }) => {
         style={styles.input}
         onChangeText={setPassword}
       />
+
       <Text>
-        Do not have an account? <Link href='/signup'>Register here</Link>
+        Do not have an account? <Link href='/signup' style={{ textDecorationLine: 'underline' }}> Register here </Link>
       </Text>
-      <Button
+
+      <TouchableOpacity
+        style = {styles.button}
         title="Login"
         onPress={async () => {
           await onLogin();
         }}
-      />
+        >
+          <Text style = {styles.buttonText}>Login</Text>
+      </TouchableOpacity>
 
     </View>
   );
@@ -76,13 +90,15 @@ const LoginScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    backgroundColor:'#ffffff',
     padding: 16,
+    paddingTop: 100
   },
   title: {
     fontSize: 24,
     marginBottom: 16,
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: 150,
   },
   input: {
     height: 40,
@@ -90,7 +106,29 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 12,
     paddingHorizontal: 8,
+    borderRadius: 10,
+  },
+  button: {
+    backgroundColor: '#33e0ff', 
+    paddingVertical: 10,
+    paddingHorizontal: 100,
+    borderRadius: 10, 
+    alignItems: 'center', 
+    marginTop: 30,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+
+  image: {
+    width: 300,
+    height: 50,
+    marginBottom: 20,
+    marginTop: 0,
   }
+
 });
 
 export default LoginScreen;
